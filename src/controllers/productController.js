@@ -25,12 +25,10 @@ const createProduct = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Please enter title name" });
     if (!validator.isValid(title))
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Please enter title name in right formate",
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Please enter title name in right formate",
+      });
     const uniqueTitle = await productModel.findOne({ title: title });
     if (uniqueTitle) {
       return res
@@ -43,12 +41,10 @@ const createProduct = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Please enter description" });
     if (!validator.isValid(description))
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Please enter description in right formate",
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Please enter description in right formate",
+      });
 
     if (!price)
       return res
@@ -61,12 +57,10 @@ const createProduct = async function (req, res) {
 
     if (style) {
       if (!validator.isValid(style))
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "Please enter style name in right formate",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "Please enter style name in right formate",
+        });
       if (!validator.isValidTitle(style))
         return res
           .status(400)
@@ -82,24 +76,20 @@ const createProduct = async function (req, res) {
     }
     for (let i = 0; i < availableSize.length; i++) {
       if (!["S", "XS", "M", "X", "L", "XXL", "XL"].includes(availableSize[i])) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "Sizes should be [S,XS,M,X,L,XXL,XL]",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "Sizes should be [S,XS,M,X,L,XXL,XL]",
+        });
       }
     }
     data.availableSizes = availableSize;
 
     if (installments) {
       if (!validator.isValidNumber(installments))
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "Please enter installments in only Number",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "Please enter installments in only Number",
+        });
     }
 
     if ("isFreeShipping" in data) {
@@ -109,12 +99,10 @@ const createProduct = async function (req, res) {
           .send({ status: false, message: "Please enter only true & false" });
       }
       if (!["true", "false"].includes(isFreeShipping)) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "isFreeshipping must be a Boolean Value",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "isFreeshipping must be a Boolean Value",
+        });
       }
     }
 
@@ -133,12 +121,10 @@ const createProduct = async function (req, res) {
     data.productImage = productImage;
 
     if (!validator.isValid(style))
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Please enter style name in right format",
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Please enter style name in right format",
+      });
 
     let productdata = await productModel.create(data);
     res
@@ -161,13 +147,11 @@ const getProductByFilter = async (req, res) => {
   const { size, name, priceGreaterThan, priceLessThan, priceSort } = reqBody;
   const priceSorts = priceSort || 1;
   if (priceSorts > 1 || priceSorts < -1 || priceSorts == 0) {
-    return res
-      .status(400)
-      .send({
-        status: false,
-        message:
-          "shortPrice value should be '1' or '-1', '1' for accending order and '-1' for decending order, By default it is shownig in accending order ",
-      });
+    return res.status(400).send({
+      status: false,
+      message:
+        "shortPrice value should be '1' or '-1', '1' for accending order and '-1' for decending order, By default it is shownig in accending order ",
+    });
   }
   const filter = { isDeleted: false };
   if (name) {
@@ -262,12 +246,10 @@ const updateProductDetails = async function (req, res) {
     } = updateData;
 
     if (Object.keys(rest).length > 0)
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: `you can't update on ${Object.keys(rest)} key`,
-        });
+      return res.status(400).send({
+        status: false,
+        message: `you can't update on ${Object.keys(rest)} key`,
+      });
 
     if (!validator.isValidObjectId(productId))
       return res.status(400).send({ status: false, msg: "invalid product Id" });
@@ -332,24 +314,20 @@ const updateProductDetails = async function (req, res) {
       availableSize = availableSize.toUpperCase();
       availableSize = availableSize.split(","); //Creating an array
       if (availableSize.length === 0) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message:
-              "Please provide product sizes if available sizes key is provided",
-          });
+        return res.status(400).send({
+          status: false,
+          message:
+            "Please provide product sizes if available sizes key is provided",
+        });
       }
       for (let i = 0; i < availableSize.length; i++) {
         if (
           !["S", "XS", "M", "X", "L", "XXL", "XL"].includes(availableSize[i])
         ) {
-          return res
-            .status(400)
-            .send({
-              status: false,
-              message: "Sizes should be [S,XS,M,X,L,XXL,XL]",
-            });
+          return res.status(400).send({
+            status: false,
+            message: "Sizes should be [S,XS,M,X,L,XXL,XL]",
+          });
         }
       }
       updateData.availableSizes = availableSize;
@@ -357,12 +335,10 @@ const updateProductDetails = async function (req, res) {
 
     if (installments) {
       if (!validator.isValidNumber(installments))
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "installments Should be whole Number Only",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "installments Should be whole Number Only",
+        });
     }
 
     updateData._id = productId;
@@ -378,13 +354,11 @@ const updateProductDetails = async function (req, res) {
         .status(404)
         .send({ status: false, message: "No such product available" });
 
-    return res
-      .status(200)
-      .send({
-        status: true,
-        message: "Product updated successfully",
-        data: updateDetails,
-      });
+    return res.status(200).send({
+      status: true,
+      message: "Product updated successfully",
+      data: updateDetails,
+    });
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
     return res.status(500).send({ status: false, error: err.message });
